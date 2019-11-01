@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+    <arg-SFP>A</arg-SFP>
+    <class-FMP>DesignPatterns.FectoryMethodPattern.ConcreteFactory2</class-FMP>
+    <class-AFP>DesignPatterns.AbstractFactoryPattern.ConcreteFactory2</class-AFP>
+</config>

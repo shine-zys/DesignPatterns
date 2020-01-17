@@ -1,0 +1,41 @@
+# 黑名单用户RedisBatch
+redisBatchBlacklist:
+  -
+    slave:
+#      nodes: 10.1.104.13:6741
+#      password:
+#      pool:
+#        max-active: 100
+#        max-idle: 10
+#        max-wait: 1000
+    timeout: 1000
+
+  -
+    slave:
+#      nodes: 10.1.104.13:6742
+#      password:
+#      pool:
+#        max-active: 100
+#        max-idle: 10
+#        max-wait: 1000
+    timeout: 1000
+
+  -
+    slave:
+#      nodes: 10.1.104.13:6743
+#      password:
+#      pool:
+#        max-active: 100
+#        max-idle: 10
+#        max-wait: 1000
+    timeout: 1000
+
+  -
+    slave:
+#      nodes: 10.1.104.13:6744
+#      password:
+#      pool:
+#        max-active: 100
+#        max-idle: 10
+#        max-wait: 1000
+    timeout: 1000

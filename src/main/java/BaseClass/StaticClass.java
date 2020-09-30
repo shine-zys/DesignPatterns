@@ -1,8 +1,9 @@
 package BaseClass;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import com.google.common.util.concurrent.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.concurrent.*;
 
 /**
  * @author zhangyaosheng <zoey@douyu.tv>
@@ -15,6 +16,7 @@ public class StaticClass {
 
     String a = print();
     private final ExecutorService delegateAsyncTransformer = Executors.newCachedThreadPool(new StaticClass.DaemonThreadFactory());
+    private final ListeningExecutorService transformerPool;
 
     private static String print() {
         System.out.println("static class static method print ... ");
@@ -23,18 +25,50 @@ public class StaticClass {
 
     public StaticClass() {
         System.out.println("static class ...");
+        this.transformerPool = MoreExecutors.listeningDecorator(this.delegateAsyncTransformer);
     }
 
-    private class testClass {
-        testClass() {
-            System.out.println("static class testClass class start ... ");
-            new StaticClass.testClass.innerClass();
-            System.out.println("static class testClass class end ... ");
+    public String listDirEx(String key, boolean recursive) throws InterruptedException, ExecutionException, TimeoutException {
+        return (String)this.asyncExecute(key).get(20000L, TimeUnit.MILLISECONDS);
+    }
+
+    private ListenableFuture<String> asyncExecute(String request) {
+        ListenableFuture<String> response = this.asyncExecuteHttp(request);
+        return Futures.transformAsync(response, new StaticClass.AsyncTransformation(request, this.transformerPool), MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<String> asyncExecuteHttp(String request) {
+        final SettableFuture<String> future = SettableFuture.create();
+        future.set("aaa");
+        return future;
+    }
+
+    private class AsyncTransformation implements AsyncFunction<String, String> {
+        private final ListeningExecutorService transformPool;
+        private final String request;
+
+        AsyncTransformation(String request, ListeningExecutorService transformPool) {
+            this.request = request;
+            this.transformPool = transformPool;
+            System.out.println("new StaticClass.AsyncTransformation ... " + this.request);
         }
 
-        private class innerClass {
-            innerClass() {
-                System.out.println("static class testClass class innerClass class ... ");
+        @Override
+        public ListenableFuture<String> apply(@Nullable String response) throws Exception {
+            return this.transformPool.submit(new StaticClass.AsyncTransformation.TransformerWorker(response));
+        }
+
+        private class TransformerWorker implements Callable<String> {
+            private final String response;
+
+            TransformerWorker(String response) {
+                this.response = response;
+                System.out.println("static class testClass class innerClass class ... " + this.response);
+            }
+
+            @Override
+            public String call() throws Exception {
+                return "bbb";
             }
         }
     }
@@ -48,18 +82,6 @@ public class StaticClass {
             t.setDaemon(true);
             return t;
         }
-    }
-
-    public void test1() {
-        System.out.println("test1 start ...");
-        new StaticClass();
-        System.out.println("test1 end ...");
-    }
-
-    public void test2() {
-        System.out.println("test2 start ...");
-        new StaticClass.testClass();
-        System.out.println("test2 end ...");
     }
 
 }

@@ -30,13 +30,21 @@ public class FlyingChessMain {
 //        rewards.put(14, 100);
         config.setRewards(rewards);
         Map<Integer, Integer> retreats = new HashMap<>();
-//        retreats.put(8, 3);
+        retreats.put(8, 3);
         retreats.put(12, 3);
         config.setRetreats(retreats);
 
-        int count = 10000;  // 用户参与次数
+        int count = 20;  // 用户参与次数
 
-        System.out.println(statisticData(config, count));
+        System.out.println("格子总数：" + config.getSteps());
+        System.out.println("摇骰子单次消费：" + config.getConsume() + "鱼翅");
+        System.out.println("每圈结束奖励：" + config.getFinishReward() + "鱼翅");
+        System.out.println("骰子范围：" + config.getDice());
+        System.out.println("奖励节点：" + config.getRewards());
+        System.out.println("回退节点：" + config.getRetreats());
+        System.out.println("测试次数：" + count + "次");
+
+        System.out.println(count + "次总盈利：" + statisticData(config, count) + "鱼翅");
     }
 
     public static long statisticData(ChessConfig config, int count) {
@@ -75,8 +83,9 @@ public class FlyingChessMain {
             current = current - config.getSteps();
         }
         if (config.getRetreats().containsKey(current)) {
-            current -= config.getRetreats().get(current);
-            System.out.println("用户回退 " + config.getRetreats().get(current) + "步，current = " + current);
+            int back = config.getRetreats().get(current);
+            current -= back;
+            System.out.println("用户回退 " + back + "步，current = " + current);
         }
         if (config.getRewards().containsKey(current)) {
             cost += config.getRewards().get(current);

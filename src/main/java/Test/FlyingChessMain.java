@@ -1,8 +1,11 @@
 package Test;
 
 import FlyingChess.ChessConfig;
+import com.google.common.collect.ImmutableMap;
 import javafx.util.Pair;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,18 +23,20 @@ public class FlyingChessMain {
     public static void main(String[] args) {
 
         ChessConfig config = new ChessConfig();
-        Pair<Integer, Integer> dice = new Pair<>(1, 6);
+        Pair<Integer, Integer> dice = new Pair<>(1, 5);
         config.setDice(dice);
-        config.setSteps(18);
-        config.setConsume(20);
-        config.setFinishReward(200);
+        config.setSteps(25);
+        config.setConsume(2000);
+        config.setFinishReward(1000);
         Map<Integer, Integer> rewards = new HashMap<>();
-        rewards.put(6, 20);
+        rewards.put(5, 100);
+        rewards.put(10, 100);
+        rewards.put(15, 100);
 //        rewards.put(14, 100);
         config.setRewards(rewards);
         Map<Integer, Integer> retreats = new HashMap<>();
-        retreats.put(8, 3);
-        retreats.put(12, 3);
+        retreats.put(9, 3);
+        retreats.put(17, 3);
         config.setRetreats(retreats);
 
         int count = 20;  // 用户参与次数
@@ -44,20 +49,27 @@ public class FlyingChessMain {
         System.out.println("回退节点：" + config.getRetreats());
         System.out.println("测试次数：" + count + "次");
 
-        System.out.println(count + "次总盈利：" + statisticData(config, count) + "鱼翅");
+        statisticData(config, count);
     }
 
-    public static long statisticData(ChessConfig config, int count) {
+    public static void statisticData(ChessConfig config, int count) {
 
-        long profit = 0;
+        long startTime = System.currentTimeMillis();
+        long income = 0;  // 公司获得的收入
+        long cost = 0;  // 公司的产出
         int start = 0;
         for (int i = 0; i < count; i++) {
             System.out.println("/******************************** i = " + i + ", start = " + start + "*********************************/");
-            Pair<Integer, Integer> res = play(config, start);
-            start = res.getKey();
-            profit += res.getValue();
+            Map<String, Integer> res = play(config, start);
+            start = res.getOrDefault("current", 0);
+            income += res.getOrDefault("income", 0);
+            cost += res.getOrDefault("cost", 0);
         }
-        return profit;
+        System.out.println("/******************************** GAME OVER *********************************/");
+        double rate = new BigDecimal(income).divide(new BigDecimal(cost), 10, RoundingMode.HALF_UP).doubleValue();
+        System.out.println("总耗时：" + (System.currentTimeMillis() - startTime) + "ms");
+        System.out.println("总投入：" + income + "；总产出：" + cost);
+        System.out.println(count + "次投产比为：" + rate);
     }
 
     /**
@@ -66,7 +78,7 @@ public class FlyingChessMain {
      * @param config
      * @return
      */
-    public static Pair<Integer, Integer> play(ChessConfig config, int start) {
+    public static Map<String, Integer> play(ChessConfig config, int start) {
 
         int income = config.getConsume();
         int cost = 0;
@@ -91,8 +103,8 @@ public class FlyingChessMain {
             cost += config.getRewards().get(current);
             System.out.println("用户获得奖励：" + config.getRewards().get(current) + "，current = " + current);
         }
-        System.out.println("本次完成，start = " + start + ", current = " + current + ", income = " + income + ", cost = " + cost + ", profit = " + (income - cost));
-        return new Pair<>(current, income - cost);
+        System.out.println("本次完成，start = " + start + ", current = " + current + ", income = " + income + ", cost = " + cost);
+        return ImmutableMap.of("current", current, "income", income, "cost", cost);
     }
 
     public static int rolling(Pair<Integer, Integer> dice) {

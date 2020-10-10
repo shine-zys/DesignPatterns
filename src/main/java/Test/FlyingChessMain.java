@@ -30,6 +30,7 @@ public class FlyingChessMain {
         config.setConsume(2000);
         config.setFinishReward(2000);
         Map<Integer, Integer> rewards = new HashMap<>();
+        rewards.put(0, 2000);
         rewards.put(5, 100);
         rewards.put(12, 1000);
         rewards.put(17, 60);
@@ -44,11 +45,10 @@ public class FlyingChessMain {
         forwards.put(14, Lists.newArrayList(1,3));
         config.setForwards(forwards);
 
-        int count = 200;  // 用户参与次数
+        int count = 500000;  // 用户参与次数
 
         System.out.println("格子总数：" + config.getSteps());
         System.out.println("摇骰子单次消费：" + config.getConsume() + "鱼翅");
-        System.out.println("每圈结束奖励：" + config.getFinishReward() + "鱼翅");
         System.out.println("骰子范围：" + config.getDice());
         System.out.println("奖励节点：" + config.getRewards());
         System.out.println("回退节点：" + config.getRetreats());
@@ -82,7 +82,7 @@ public class FlyingChessMain {
             rate = new BigDecimal(income).divide(new BigDecimal(cost), 10, RoundingMode.HALF_UP).doubleValue();
         }
         System.out.println("总耗时：" + (System.currentTimeMillis() - startTime) + "ms");
-        System.out.println("总投入：" + income + "；总产出：" + cost + "；总圈数：" + round + "；奖励圈数：" + rewardRound);
+        System.out.println("总投入：" + income + "；总产出：" + cost + "；总圈数：" + round);
         System.out.println(count + "次投产比为：" + rate);
     }
 
@@ -143,13 +143,8 @@ public class FlyingChessMain {
         int current = start + forward;
         if (current >= config.getSteps()) {
             System.out.println("一圈结束, current = " + current);
-            round ++;
-            if (current == config.getSteps()) {  // 结束命中原点才会中奖
-                cost += config.getFinishReward();
-                rewardRound ++;
-                System.out.println("命中原点获得奖励, reward = " + config.getFinishReward());
-            }
-            current = current - config.getSteps();
+            round += + current / config.getSteps();
+            current = current % config.getSteps();
         }
         while (config.getRetreats().containsKey(current) || config.getForwards().containsKey(current)) {
             if (config.getRetreats().containsKey(current)) {

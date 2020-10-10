@@ -26,8 +26,8 @@ public class FlyingChessMain {
         Pair<Integer, Integer> dice = new Pair<>(1, 5);
         config.setDice(dice);
         config.setSteps(25);
-        config.setConsume(2000);
-        config.setFinishReward(1000);
+        config.setConsume(3000);
+        config.setFinishReward(2000);
         Map<Integer, Integer> rewards = new HashMap<>();
         rewards.put(5, 100);
         rewards.put(10, 100);
@@ -58,17 +58,19 @@ public class FlyingChessMain {
         long income = 0;  // 公司获得的收入
         long cost = 0;  // 公司的产出
         int start = 0;
+        int round = 0;
         for (int i = 0; i < count; i++) {
             System.out.println("/******************************** i = " + i + ", start = " + start + "*********************************/");
-            Map<String, Integer> res = play(config, start);
+            Map<String, Integer> res = play(config, start, round);
             start = res.getOrDefault("current", 0);
+            round = res.getOrDefault("round", 0);
             income += res.getOrDefault("income", 0);
             cost += res.getOrDefault("cost", 0);
         }
         System.out.println("/******************************** GAME OVER *********************************/");
         double rate = new BigDecimal(income).divide(new BigDecimal(cost), 10, RoundingMode.HALF_UP).doubleValue();
         System.out.println("总耗时：" + (System.currentTimeMillis() - startTime) + "ms");
-        System.out.println("总投入：" + income + "；总产出：" + cost);
+        System.out.println("总投入：" + income + "；总产出：" + cost + "；总圈数：" + round);
         System.out.println(count + "次投产比为：" + rate);
     }
 
@@ -78,7 +80,7 @@ public class FlyingChessMain {
      * @param config
      * @return
      */
-    public static Map<String, Integer> play(ChessConfig config, int start) {
+    public static Map<String, Integer> play(ChessConfig config, int start, int round) {
 
         int income = config.getConsume();
         int cost = 0;
@@ -91,6 +93,7 @@ public class FlyingChessMain {
         int current = start + forward;
         if (current >= config.getSteps()) {
             System.out.println("一圈结束, current = " + current);
+            round ++;
             cost += config.getFinishReward();
             current = current - config.getSteps();
         }
@@ -104,7 +107,7 @@ public class FlyingChessMain {
             System.out.println("用户获得奖励：" + config.getRewards().get(current) + "，current = " + current);
         }
         System.out.println("本次完成，start = " + start + ", current = " + current + ", income = " + income + ", cost = " + cost);
-        return ImmutableMap.of("current", current, "income", income, "cost", cost);
+        return ImmutableMap.of("current", current, "income", income, "cost", cost, "round", round);
     }
 
     public static int rolling(Pair<Integer, Integer> dice) {

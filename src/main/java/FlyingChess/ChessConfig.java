@@ -48,4 +48,9 @@ public class ChessConfig implements Serializable {
      * 回退节点及步数
      */
     private Map<Integer, Integer> retreats = new HashMap<>();
+
+    /**
+     * 前进节点及前进随机步数
+     */
+    private Map<Integer, List<Integer>> forwards = new HashMap<>();
 }

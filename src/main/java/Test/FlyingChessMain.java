@@ -26,23 +26,21 @@ public class FlyingChessMain {
         ChessConfig config = new ChessConfig();
         Pair<Integer, Integer> dice = new Pair<>(1, 6);
         config.setDice(dice);
-        config.setSteps(24);
+        config.setSteps(22);
         config.setConsume(2000);
         config.setFinishReward(2000);
         Map<Integer, Integer> rewards = new HashMap<>();
-        rewards.put(0, 2000);
-        rewards.put(5, 100);
-        rewards.put(12, 1000);
-        rewards.put(17, 60);
+        rewards.put(0, 1000);
+        rewards.put(5, 500);
+        rewards.put(11, 500);
+        rewards.put(14, 500);
         config.setRewards(rewards);
         Map<Integer, Integer> retreats = new HashMap<>();
-        retreats.put(11, 3);
-        retreats.put(19, 3);
+        /*retreats.put(10, 3);
+        retreats.put(18, 3);*/
         config.setRetreats(retreats);
         Map<Integer, List<Integer>> forwards = new HashMap<>();
-        forwards.put(4, Lists.newArrayList(2));
-        forwards.put(7, Lists.newArrayList(1,2,3,4,5,6));
-        forwards.put(14, Lists.newArrayList(1,3));
+        /*forwards.put(4, Lists.newArrayList(2));*/
         config.setForwards(forwards);
 
         int count = 500000;  // 用户参与次数
@@ -63,7 +61,7 @@ public class FlyingChessMain {
         long startTime = System.currentTimeMillis();
         long income = 0;  // 公司获得的收入
         long cost = 0;  // 公司的产出
-        int start = 0;
+        int start = 1;
         int round = 0;
         int rewardRound = 0;
         for (int i = 0; i < count; i++) {
@@ -82,7 +80,7 @@ public class FlyingChessMain {
             rate = new BigDecimal(income).divide(new BigDecimal(cost), 10, RoundingMode.HALF_UP).doubleValue();
         }
         System.out.println("总耗时：" + (System.currentTimeMillis() - startTime) + "ms");
-        System.out.println("总投入：" + income + "；总产出：" + cost + "；总圈数：" + round);
+        System.out.println("总收入：" + income + "；总产出：" + cost + "；总圈数：" + round);
         System.out.println(count + "次投产比为：" + rate);
     }
 

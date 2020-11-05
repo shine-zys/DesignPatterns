@@ -1,13 +1,13 @@
 package Test;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import lombok.Data;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,14 +52,34 @@ public class MainTest {
         return 2;
     }
 
+
+
+    @Data
+    public static class CCC {
+        private String a = "";
+
+        private int b = 1;
+
+        private Map<Integer, Integer> map = new HashMap<>();
+    }
+
     public static void main(String[] args) {
 
-        List<Integer> list = new ArrayList<>();
+        /*List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(22);
         list.add(22);
         list.add(1);
         list = list.stream().distinct().collect(Collectors.toList());
-        System.out.println(list);
+        System.out.println(list);*/
+        /*CCC data = new CCC();
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(1, 0);
+        map.put(2, 0);
+        map.put(3, 0);
+        data.setMap(map);
+        Map<String, Object> res = BeanUtil.beanToMap(data);
+        System.out.println(res);*/
+        System.out.println(DateUtil.secondToTime((int) DateUtil.currentSeconds()));
     }
 }

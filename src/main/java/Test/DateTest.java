@@ -10,13 +10,6 @@ import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * @anchor zhangyaosheng
- * @desc
- * @date 2020/9/14
- * @time 11:57 下午
- * @copyright douyu.com
- */
 public class DateTest {
 
     public static void main(String[] args) throws Exception {

@@ -2,13 +2,6 @@ package Test;
 
 import javax.annotation.PostConstruct;
 
-/**
- * @author zhangyaosheng <zoey@douyu.tv>
- * @desc
- * @date 2019/9/4
- * @time 17:59
- * @copyright douyu.com
- */
 public class InnerClassTest {
 
     InnerClassTest() {

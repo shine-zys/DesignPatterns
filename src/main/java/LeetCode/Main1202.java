@@ -2,13 +2,6 @@ package LeetCode;
 
 import java.util.*;
 
-/**
- * @author zhangyaosheng <zoey@douyu.tv>
- * @desc
- * @date 2021/1/11
- * @time 17:04
- * @copyright douyu.com
- */
 public class Main1202 {
 
     public static void main(String[] args) {

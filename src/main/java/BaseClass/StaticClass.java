@@ -5,13 +5,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.concurrent.*;
 
-/**
- * @author zhangyaosheng <zoey@douyu.tv>
- * @desc
- * @date 2020/1/17
- * @time 17:43
- * @copyright douyu.com
- */
 public class StaticClass {
 
     String a = print();

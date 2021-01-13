@@ -9,13 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @anchor zhangyaosheng
- * @desc
- * @date 2020/9/27
- * @time 12:28 上午
- * @copyright douyu.com
- */
 @Data
 public class ChessConfig implements Serializable {
 

@@ -12,13 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * @anchor zhangyaosheng
- * @desc
- * @date 2020/9/27
- * @time 12:27 上午
- * @copyright douyu.com
- */
 public class FlyingChessMain {
 
     public static void main(String[] args) {

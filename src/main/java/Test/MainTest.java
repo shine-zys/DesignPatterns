@@ -10,13 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * @anchor zhangyaosheng
- * @desc
- * @date 2020/3/2
- * @time 7:20 下午
- * @copyright douyu.com
- */
 public class MainTest {
 
 
